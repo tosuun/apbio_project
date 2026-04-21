@@ -1,0 +1,21 @@
+# Core RL stack
+gymnasium>=0.29.1,<1.2
+stable-baselines3>=2.3.0,<2.7
+
+# Deep learning
+torch>=2.2.0
+numpy>=1.24,<2.0
+
+# Data, plotting, analysis
+pandas>=2.0
+matplotlib>=3.7
+seaborn>=0.13
+scipy>=1.11
+
+# Logging & utilities
+tqdm>=4.66
+pyyaml>=6.0
+
+# Jupyter / Colab
+ipykernel
+ipywidgets
