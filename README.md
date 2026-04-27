@@ -1,66 +1,72 @@
 # APBIO Semester Project
 
-Course project for **Bio-Inspired Machine Learning (APBIO)** at Universidad de
-Vigo, 2025/26.
+Course project for Bio-Inspired Machine Learning (APBIO) at Universidad
+de Vigo, 2025/26. Author: İbrahim Emir Tosun (Erasmus student).
 
-The goal is to combine a bio-inspired ML component with a reinforcement learning
-algorithm. My choice:
+## What this is
 
-- **Bio-inspired component:** Modern Hopfield Network, used as a replay buffer.
-- **RL algorithm:** DQN.
-- **Environment:** CartPole-v1 (Gymnasium).
+I combined a Modern Hopfield Network with DQN. The Hopfield part replaces
+the standard random replay buffer: when the agent samples a mini-batch
+for training, the buffer uses the most recent observation as a query and
+returns transitions whose states are most similar to it. Plain DQN just
+samples uniformly at random.
 
-Instead of sampling past experiences uniformly at random (which is what plain
-DQN does), the agent uses the current state as a query to a Hopfield
-associative memory, and trains on the transitions that are most similar to
-that query. The idea is that this should give the agent a more informative
-mini-batch than random sampling.
+I tested this on CartPole-v1 from Gymnasium. The full report is in
+`report/apbio_project.pdf`.
 
-## How to run
+## What's in the repo
 
-I use Google Colab for training. The notebooks live in `notebooks/` and each
-one installs its own dependencies in the first cell.
+```
+notebooks/      Colab notebooks (this is where everything was actually run)
+scripts/        plot_architecture.py and plot_results.py
+logs/           per-seed CSV logs from every training run
+figures/        all the figures from the report
+report/         main.tex, references.bib, main.pdf
+requirements.txt
+```
 
-For a local setup:
+There are 4 notebooks:
+
+- `01_baseline_dqn.ipynb` — plain DQN sanity check on CartPole
+- `02_hopfield_module.ipynb` — Hopfield network on its own (recall tests)
+- `03_hopfield_dqn.ipynb` — first hybrid run, single seed
+- `04_main_experiment.ipynb` — main experiment + sweeps + best config
+
+## How to reproduce
+
+I ran everything on Google Colab with a CPU runtime, no GPU. To reproduce:
+
+1. Open `notebooks/04_main_experiment.ipynb` in Colab.
+2. Mount Drive and run all cells. The notebook installs its own packages.
+3. The script writes per-seed CSVs to `logs/` and figures to `figures/`.
+
+If you want to run it locally instead:
 
 ```bash
 git clone https://github.com/tosuun/apbio_project.git
 cd apbio_project
 pip install -r requirements.txt
+jupyter notebook notebooks/04_main_experiment.ipynb
 ```
 
-The main experiment (5 seeds, baseline + hybrid) can be reproduced with:
+The main experiment (5 seeds × baseline + 5 seeds × hybrid) takes about
+30 minutes on a CPU. The full set of sweeps adds another hour.
+
+## Regenerating the figures
+
+If the CSVs in `logs/` are already there, you don't need to retrain to
+get the figures back:
 
 ```bash
-python -m src.train --mode baseline
-python -m src.train --mode hybrid
 python scripts/plot_results.py
 ```
 
-Expected runtime: ~90 minutes on a laptop CPU (no GPU needed).
-
-## Repo layout
-
-```
-notebooks/   Colab notebooks where most of the work happens
-src/         Python modules (Hopfield buffer, training loop, utils)
-configs/     YAML config files
-logs/        Per-seed CSV logs
-figures/     Figures used in the report
-report/      LaTeX source of the written report
-```
-
-## Status
-
-- [x] Baseline DQN running on CartPole
-- [ ] Hopfield replay buffer module
-- [ ] Hybrid integration
-- [ ] Hyperparameter sweeps
-- [ ] Ablation study
-- [ ] Final report
-- [ ] Video presentation
+This rebuilds every figure in `figures/` from the raw logs.
 
 ## Notes
 
-Individual project. All code and writing are my own. Dependencies
-(Stable-Baselines3, Gymnasium, PyTorch) are cited in the report.
+- This is an individual project.
+- The hyperparameters are the Stable-Baselines3 RL Zoo defaults for DQN
+  on CartPole-v1.
+- The bibliography in the report cites the Hopfield paper, the DQN paper,
+  Stable-Baselines3, Gymnasium, and Prioritized Experience Replay.
