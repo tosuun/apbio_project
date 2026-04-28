@@ -73,5 +73,3 @@ This rebuilds every figure in `figures/` from the raw logs.
 - This is an individual project.
 - The hyperparameters are the Stable-Baselines3 RL Zoo defaults for DQN
   on CartPole-v1.
-- The bibliography in the report cites the Hopfield paper, the DQN paper,
-  Stable-Baselines3, Gymnasium, and Prioritized Experience Replay.
