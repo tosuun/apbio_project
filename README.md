@@ -12,7 +12,7 @@ returns transitions whose states are most similar to it. Plain DQN just
 samples uniformly at random.
 
 I tested this on CartPole-v1 from Gymnasium. The full report is in
-`report/apbio_project.pdf`.
+`report/main.pdf`.
 
 ## What's in the repo
 
@@ -48,6 +48,11 @@ cd apbio_project
 pip install -r requirements.txt
 jupyter notebook notebooks/04_main_experiment.ipynb
 ```
+
+Note: notebook 04 caches per-seed results in `logs/`. Since the repo
+already includes the logs from my runs, re-running the notebook will
+finish almost instantly (it just reads the existing CSVs). If you want
+to actually retrain from scratch, delete the `logs/` folder first.
 
 The main experiment (5 seeds × baseline + 5 seeds × hybrid) takes about
 30 minutes on a CPU. The full set of sweeps adds another hour.
